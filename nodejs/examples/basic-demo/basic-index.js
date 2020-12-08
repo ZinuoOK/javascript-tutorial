@@ -1,7 +1,7 @@
 range_calc(5, 15, '+');
 
-console.log( );
 function range_calc(start, end, type) {
+    console.log(type);
     let result;
     if ('+-*/'.indexOf(type) == -1) {
         console.log('Unsupported calculation...');
@@ -12,15 +12,42 @@ function range_calc(start, end, type) {
         if ('*/'.indexOf(type) == -1) result = 0;
         else result = 1;
     }
-    for (let i = start; i < end + 1; i++)
-        eval(`result ${type}=i ;`);
+    //  
+    // for (let i = start; i < end + 1; i++)
+    //     eval(`result ${type}=i ;`);
 
-    console.log(`The result of operator ${type} action from ${start} to ${end} = ${result}`);
-
-    return result;
+    switch (type) {
+        case '+':
+            for (let i = start; i <= end; i++)
+                result += i;
+            break;
+        case '-':
+            for (let i = start; i <= end; i++)
+                result -= i;
+            break;
+        case '*':
+            for (let i = start; i <= end; i++)
+                result *= i;
+            break;
+        case '/':
+            for (let i = start; i <= end; i++)
+                result /= i;
+            break;
+    }
+    console.log(result);
 }
 
-let returned = null;
+//eval函数比较
+// function looseJsonParse(obj) {
+//     return eval(obj);
+// }
+// console.log(looseJsonParse(
+//     `{a:(4-1), b:function(){}, c:new Date()}`
+// ))
 
-// range_calc(1, 10, '+');
-// range_calc(1, 10, '-');
+function betterJsonParse(obj) {
+    return Function('"use strict";return (' + obj + ')')();
+}
+console.log(betterJsonParse(
+    "{a:(4-1), b:function(){}, c:new Date()}"
+))
